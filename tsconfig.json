@@ -55,6 +55,7 @@
     // "emitDecoratorMetadata": true,         /* Enables experimental support for emitting type metadata for decorators. */
   },
   "files": [
+    "./node_modules/@types/pixi.js/index.d.ts",
     "./main.ts"
   ]
 }
