@@ -1,19 +1,38 @@
 "use strict";
-let type = "WebGL";
-if (!PIXI.utils.isWebGLSupported()) {
-    type = "canvas";
+let canvases = 0;
+class app {
+    constructor(backgound = "000000", canvas = null, size = null, autoresize = false) {
+        this.backgound = backgound;
+        this.autoresize = autoresize;
+        if (canvas != null) {
+            this.canvas = canvas;
+        }
+        else {
+            canvases += 1;
+            let cv = document.createElement('canvas');
+            cv.setAttribute('id', '' + canvases);
+            document.body.appendChild(cv);
+            this.canvas = document.getElementById('' + canvases);
+        }
+        this.context = this.canvas.getContext("2d");
+        if (size === null || autoresize === true) {
+            this.canvas.width = window.outerWidth;
+            this.canvas.height = window.outerHeight;
+        }
+        else {
+            this.canvas.width = size[0];
+            this.canvas.height = size[0];
+        }
+        updt();
+    }
 }
-PIXI.utils.sayHello(type);
-let app = new PIXI.Application({
-    width: 256,
-    height: 256,
-    antialias: true,
-    transparent: false,
-    resolution: 1 // default: 1
-});
-app.renderer.autoResize = true;
-app.renderer.view.style.position = "absolute";
-app.renderer.view.style.display = "block";
-app.renderer.autoResize = true;
-app.renderer.resize(window.innerWidth, window.innerHeight);
-document.body.appendChild(app.view);
+function updt() {
+    window.requestAnimationFrame(function () {
+        updt();
+        draw();
+    });
+}
+let game = new app();
+function draw() {
+    console.log('gg');
+}
