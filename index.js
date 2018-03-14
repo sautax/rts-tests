@@ -1,7 +1,7 @@
 "use strict";
 let canvases = 0;
 class app {
-    constructor(backgound = "000000", canvas = null, size = null, autoresize = false) {
+    constructor(backgound = "#000000", canvas = null, size = null, autoresize = true) {
         this.backgound = backgound;
         this.autoresize = autoresize;
         if (canvas != null) {
@@ -15,22 +15,27 @@ class app {
             this.canvas = document.getElementById('' + canvases);
         }
         this.context = this.canvas.getContext("2d");
+        this.oldsize = [];
         if (size === null || autoresize === true) {
-            this.canvas.width = window.outerWidth;
-            this.canvas.height = window.outerHeight;
+            this.canvas.width = document.body.clientWidth;
+            this.canvas.height = document.body.clientHeight;
+            this.oldsize = [document.body.clientWidth, document.body.clientHeight];
         }
         else {
             this.canvas.width = size[0];
             this.canvas.height = size[0];
         }
-        updt();
+        this.update();
     }
-}
-function updt() {
-    window.requestAnimationFrame(function () {
-        updt();
+    update() {
+        if (this.autoresize && (document.body.clientWidth != this.oldsize[0] || document.body.clientHeight != this.oldsize[1])) {
+            this.canvas.width = document.body.clientWidth;
+            this.canvas.height = document.body.clientHeight;
+            console.log("moved");
+        }
         draw();
-    });
+        requestAnimationFrame(() => this.update());
+    }
 }
 let game = new app();
 function draw() {

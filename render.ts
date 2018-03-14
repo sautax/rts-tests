@@ -4,7 +4,8 @@ class app {
     canvas: HTMLCanvasElement
     context: CanvasRenderingContext2D
     autoresize: boolean
-    constructor(backgound: string = "000000", canvas: HTMLCanvasElement | null = null, size: number[] | null = null, autoresize = false) {
+    oldsize: number[]
+    constructor(backgound: string = "#000000", canvas: HTMLCanvasElement | null = null, size: number[] | null = null, autoresize = true) {
         this.backgound = backgound
         this.autoresize = autoresize
         if (canvas != null) {
@@ -17,19 +18,26 @@ class app {
             this.canvas = <HTMLCanvasElement>document.getElementById('' + canvases)
         }
         this.context = <CanvasRenderingContext2D>this.canvas.getContext("2d")
+
+        this.oldsize = []
+
         if (size === null || autoresize === true) {
-            this.canvas.width = window.outerWidth
-            this.canvas.height = window.outerHeight
+            this.canvas.width = document.body.clientWidth
+            this.canvas.height = document.body.clientHeight
+            this.oldsize = [document.body.clientWidth, document.body.clientHeight]
         } else {
             this.canvas.width = size[0]
             this.canvas.height = size[0]
         }
-        updt()
+        this.update()
     }
-}
-function updt(): void {
-    window.requestAnimationFrame(function () {
-        updt()
+    update() {
+        if(this.autoresize && (document.body.clientWidth!= this.oldsize[0]||document.body.clientHeight!= this.oldsize[1])){
+            this.canvas.width = document.body.clientWidth
+            this.canvas.height = document.body.clientHeight
+            console.log("moved")
+        }
         draw()
-    })
+        requestAnimationFrame(()=>this.update());
+    }
 }
