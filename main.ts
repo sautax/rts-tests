@@ -1,24 +1,46 @@
-let x = 100
-let y = 100
-let s = 0
 let f = 0
 let cir: circle
-let game = new app()
-let rect = game.createRect(x, y, 50, 50, [true, "#FFFFFF"])
-cir = new circle(500, 500, 60, game.context,[true,"#FF00FF"])
-function setup() {
+let resolution : number[]
+if(){
+    
 }
+let game = new app("#000000",null,resolution,false)
+
+let tiles : rectangle[] = []
+let whidth = game.canvas.width
+let height = game.canvas.height
+
+function setup( ){
+    tiles.push(game.createRect(0,0,game.canvas.width,game.canvas.height,{fill : true, fillStyle:"#FFFFFF",stroke : false , strokeStyle : "",strokeWeight : 0}))
+    // for(let x= 0; x<whidth;x+=40) {
+    //     for (let y = 0; y< height ; y+=40){
+    //         tiles.push(game.createRect(x,y,40,40,{fill : true , fillStyle : "#FFFFFF", stroke:true,strokeStyle:"#000000",strokeWeight:1}))
+    //     }
+    // }
+}
+
 
 function draw() {
     f += 1
-    s += 0.01
-    rect.x = Math.floor(Math.sin(s) * 100 + 200)
-    rect.y = Math.floor(Math.cos(s) * 100 + 200)
-    
-    let l = game.rectangles.length
+    let l = tiles.length
     for (let i = 0; i < l; i++) {
-        game.rectangles[i].draw()
+        tiles[i].draw()
     }
-    cir.draw()
 }
+function onWMove() {
+    tiles = []
+    height = game.canvas.height
+    whidth = game.canvas.width
+    tiles.push(game.createRect(0,0,1280,720,{fill : true, fillStyle:"#FFFFFF",stroke : false , strokeStyle : "",strokeWeight : 0}))
+
+    // for(let x= 0; x<whidth;x+=40) {
+    //     for (let y = 0; y< height ; y+=40){
+    //         tiles.push(game.createRect(x,y,40,40,{fill : true , fillStyle : "#FFFFFF", stroke:true,strokeStyle:"#000000",strokeWeight:1}))
+    //     }
+    // }
+}
+addEventListener("mousemove",function(e){
+    for (let i = 0 ; i<tiles.length;i++){
+    }
+})
 game.start()

@@ -4,6 +4,7 @@ class app {
     constructor(backgound = "#000000", canvas = null, size = null, autoresize = true) {
         this.backgound = backgound;
         this.rectangles = [];
+        this.size = size;
         this.autoresize = autoresize;
         if (canvas != null) {
             this.canvas = canvas;
@@ -24,8 +25,29 @@ class app {
         }
         else {
             this.canvas.width = size[0];
-            this.canvas.height = size[0];
+            this.canvas.height = size[1];
         }
+        this.scale = 0;
+        if (size != null) {
+            //this.scle()
+        }
+        this.context.save();
+    }
+    scle() {
+        this.context.restore();
+        this.context.save();
+        this.size = this.size;
+        if (Math.abs(this.size[0] - document.body.clientWidth) <= Math.abs(this.size[1] - document.body.clientHeight)) {
+            //this.context.translate((this.scale* document.body.clientWidth)/2,0)
+            this.scale = Math.abs(document.body.clientWidth / this.size[0]);
+        }
+        else {
+            //this.context.translate(0,(this.scale* document.body.clientHeight)/2)
+            this.scale = Math.abs(document.body.clientHeight / this.size[1]);
+        }
+        //this.scale = 1/ this.scale
+        console.log(this.scale);
+        this.context.scale(this.scale, this.scale);
     }
     start() {
         setup();
@@ -35,37 +57,47 @@ class app {
         if (this.autoresize && (document.body.clientWidth != this.oldsize[0] || document.body.clientHeight != this.oldsize[1])) {
             this.canvas.width = document.body.clientWidth;
             this.canvas.height = document.body.clientHeight;
-            console.log("moved");
+            this.oldsize[0] = document.body.clientWidth;
+            this.oldsize[1] = document.body.clientHeight;
+            this.canvas.width = document.body.clientWidth;
+            this.canvas.height = document.body.clientHeight;
+            this.oldsize[0] = document.body.clientWidth;
+            this.oldsize[1] = document.body.clientHeight;
+            this.size = this.size;
+            //this.scle()
+            onWMove();
+        }
+        if (this.autoresize && this.size != null) {
         }
         this.context.fillStyle = this.backgound;
         this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
         draw();
         requestAnimationFrame(() => this.update());
     }
-    createRect(x, y, w, h, fStyle = [true, "#000000"], sStyle = [false, "#000000", 1]) {
-        this.rectangles.push(new rectangle(x, y, w, h, this.context, fStyle, sStyle));
+    createRect(x, y, w, h, style) {
+        this.rectangles.push(new rectangle(x, y, w, h, this.context, style));
         return this.rectangles[this.rectangles.length - 1];
     }
 }
 class rectangle {
-    constructor(x, y, w, h, context, fStyle = [true, "#000000"], sStyle = [false, "#000000", 1]) {
+    constructor(x, y, w, h, context, style = { fill: true, fillStyle: "#FFFFFF", stroke: false, strokeStyle: "#000000", strokeWeight: 2 }) {
         this.x = x;
         this.y = y;
         this.w = w;
         this.h = h;
         this.context = context;
-        this.fStyle = fStyle;
-        this.sStyle = sStyle;
+        this.style = style;
         this.show = true;
     }
     draw() {
         if (this.show) {
-            if (this.fStyle[0]) {
-                this.context.fillStyle = this.fStyle[1];
+            if (this.style.fill) {
+                this.context.fillStyle = this.style.fillStyle;
                 this.context.fillRect(this.x, this.y, this.w, this.h);
             }
-            if (this.sStyle[0]) {
-                this.context.strokeStyle = this.sStyle[1];
+            if (this.style.stroke) {
+                this.context.strokeStyle = this.style.strokeStyle;
+                this.context.lineWidth = this.style.strokeWeight;
                 this.context.strokeRect(this.x, this.y, this.w, this.h);
             }
         }
@@ -99,25 +131,43 @@ class circle {
         }
     }
 }
-let x = 100;
-let y = 100;
-let s = 0;
 let f = 0;
 let cir;
-let game = new app();
-let rect = game.createRect(x, y, 50, 50, [true, "#FFFFFF"]);
-cir = new circle(500, 500, 60, game.context, [true, "#FF00FF"]);
+let resolution;
+if () {
+}
+let game = new app("#000000", null, resolution, false);
+let tiles = [];
+let whidth = game.canvas.width;
+let height = game.canvas.height;
 function setup() {
+    tiles.push(game.createRect(0, 0, game.canvas.width, game.canvas.height, { fill: true, fillStyle: "#FFFFFF", stroke: false, strokeStyle: "", strokeWeight: 0 }));
+    // for(let x= 0; x<whidth;x+=40) {
+    //     for (let y = 0; y< height ; y+=40){
+    //         tiles.push(game.createRect(x,y,40,40,{fill : true , fillStyle : "#FFFFFF", stroke:true,strokeStyle:"#000000",strokeWeight:1}))
+    //     }
+    // }
 }
 function draw() {
     f += 1;
-    s += 0.01;
-    rect.x = Math.floor(Math.sin(s) * 100 + 200);
-    rect.y = Math.floor(Math.cos(s) * 100 + 200);
-    let l = game.rectangles.length;
+    let l = tiles.length;
     for (let i = 0; i < l; i++) {
-        game.rectangles[i].draw();
+        tiles[i].draw();
     }
-    cir.draw();
 }
+function onWMove() {
+    tiles = [];
+    height = game.canvas.height;
+    whidth = game.canvas.width;
+    tiles.push(game.createRect(0, 0, 1280, 720, { fill: true, fillStyle: "#FFFFFF", stroke: false, strokeStyle: "", strokeWeight: 0 }));
+    // for(let x= 0; x<whidth;x+=40) {
+    //     for (let y = 0; y< height ; y+=40){
+    //         tiles.push(game.createRect(x,y,40,40,{fill : true , fillStyle : "#FFFFFF", stroke:true,strokeStyle:"#000000",strokeWeight:1}))
+    //     }
+    // }
+}
+addEventListener("mousemove", function (e) {
+    for (let i = 0; i < tiles.length; i++) {
+    }
+});
 game.start();
