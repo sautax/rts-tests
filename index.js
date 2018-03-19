@@ -133,9 +133,7 @@ class circle {
 }
 let f = 0;
 let cir;
-let resolution;
-if () {
-}
+let resolution = [1920, 1080];
 let game = new app("#000000", null, resolution, false);
 let tiles = [];
 let whidth = game.canvas.width;

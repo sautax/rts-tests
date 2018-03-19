@@ -1,9 +1,6 @@
 let f = 0
 let cir: circle
-let resolution : number[]
-if(){
-    
-}
+let resolution = [1920,1080]
 let game = new app("#000000",null,resolution,false)
 
 let tiles : rectangle[] = []
