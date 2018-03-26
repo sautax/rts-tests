@@ -138,34 +138,32 @@ class circle {
     y: number
     r: number
     context: CanvasRenderingContext2D
-    fStyle: (string | boolean)[]
-    sStyle: (boolean | string | number)[]
+    Style : Style
     show: boolean
-    constructor(x: number, y: number, r: number, context: CanvasRenderingContext2D, fStyle = [true, "#000000"], sStyle = [false, "#000000", 1]) {
+    constructor(x: number, y: number, r: number, context: CanvasRenderingContext2D, style : Style = {fill : true,fillStyle : "#FFFFFF", stroke : false , strokeStyle : "#000000",strokeWeight : 2}) {
         this.x = x
         this.y = y
         this.r = r
         this.context = context
-        this.fStyle = fStyle
-        this.sStyle = sStyle
+        this.Style = style
         this.show = true
 
     }
     draw() {
         if (this.show) {
-            if (this.fStyle[0]) {
+            if (this.Style.fill) {
                 this.context.beginPath()
                 this.context.arc(this.x, this.y, this.r, 0, 2 * Math.PI, false)
-                this.context.fillStyle = <string>this.fStyle[1]
+                this.context.fillStyle = <string>this.Style.fillStyle
                 this.context.fill()
 
 
             }
-            if (this.sStyle[0]) {
+            if (this.Style.stroke) {
                 this.context.beginPath()
                 this.context.arc(this.x, this.y, this.r, 0, 2 * Math.PI, false)
-                this.context.strokeStyle = <string>this.sStyle[1]
-                this.context.lineWidth = <number>this.sStyle[2]
+                this.context.strokeStyle = <string>this.Style.strokeStyle
+                this.context.lineWidth = <number>this.Style.strokeWeight
                 this.context.stroke()
             }
         }

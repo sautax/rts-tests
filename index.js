@@ -104,28 +104,27 @@ class rectangle {
     }
 }
 class circle {
-    constructor(x, y, r, context, fStyle = [true, "#000000"], sStyle = [false, "#000000", 1]) {
+    constructor(x, y, r, context, style = { fill: true, fillStyle: "#FFFFFF", stroke: false, strokeStyle: "#000000", strokeWeight: 2 }) {
         this.x = x;
         this.y = y;
         this.r = r;
         this.context = context;
-        this.fStyle = fStyle;
-        this.sStyle = sStyle;
+        this.Style = style;
         this.show = true;
     }
     draw() {
         if (this.show) {
-            if (this.fStyle[0]) {
+            if (this.Style.fill) {
                 this.context.beginPath();
                 this.context.arc(this.x, this.y, this.r, 0, 2 * Math.PI, false);
-                this.context.fillStyle = this.fStyle[1];
+                this.context.fillStyle = this.Style.fillStyle;
                 this.context.fill();
             }
-            if (this.sStyle[0]) {
+            if (this.Style.stroke) {
                 this.context.beginPath();
                 this.context.arc(this.x, this.y, this.r, 0, 2 * Math.PI, false);
-                this.context.strokeStyle = this.sStyle[1];
-                this.context.lineWidth = this.sStyle[2];
+                this.context.strokeStyle = this.Style.strokeStyle;
+                this.context.lineWidth = this.Style.strokeWeight;
                 this.context.stroke();
             }
         }
